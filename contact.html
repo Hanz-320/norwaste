@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">NorWaste</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Donation</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
+          <li class="nav-item">
+            <a class="btn btn-primary rounded-pill text-white px-4" href="#">Sign Up</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contact Section -->
+  <section class="contact bg-light py-5">
+    <div class="container text-center">
+      <h3 class="mb-4">Get in Touch with Us</h3>
+      <form action="contact.php" method="POST" class="row justify-content-center">
+        <div class="col-md-6 mb-3">
+          <textarea name="message" class="form-control" placeholder="Your message" rows="4"></textarea>
+        </div>
+        <div class="col-md-4 mb-3">
+          <input type="email" name="email" class="form-control" placeholder="Your email" required>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary px-4" type="submit">Send</button>
+        </div>
+      </form>
+    </div>
+    <div class="container mt-5">
+      <div class="row text-center">
+        <div class="col-md-4">
+          <p><strong>New York, NY</strong></p>
+          <p>62 West 55th Street, Suite 302<br>New York, NY, 10019</p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>San Francisco, CA</strong></p>
+          <p>660 Judah St, 16th Ave, 5<br>San Francisco, CA, 320003</p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Dubai</strong></p>
+          <p>U237-02, Gold Tower, Jumeirah<br>Lake Towers, Dubai, UAE</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
