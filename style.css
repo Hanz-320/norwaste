@@ -1,28 +1,110 @@
-body {
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .hero {
-    background-image: url('background1.jpg');
-    background-size: cover;
-    background-position: center;
-    color: #fff;
-  }
-  
-  .hero h2 {
-    font-size: 2.5rem;
-  }
-  
-  .features h4 {
-    font-size: 1.25rem;
-  }
-  
-  .features img {
-    display: block;
-    margin: 0 auto;
-  }
-  
-  .contact h3 {
-    font-size: 2rem;
-  }
-  
+/* Custom Styles for Navbar */
+.navbar-custom {
+    background-color: white;
+    border-bottom: 1px solid #f0f0f0;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.navbar-brand {
+    font-weight: bold;
+    color: #3a0ca3; /* Purple color for logo text */
+}
+.navbar-nav .nav-link {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+.navbar-nav .nav-link:hover {
+    color: #3a0ca3; /* Highlight on hover */
+}
+.btn-login {
+    color: #3a0ca3;
+    border: 1px solid #3a0ca3;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.btn-login:hover {
+    background-color: #3a0ca3;
+    color: white;
+}
+.btn-signup {
+    background-color: #3a0ca3;
+    color: white;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-weight: 600;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.btn-signup:hover {
+    background-color: #572dc7;
+    box-shadow: 0px 4px 8px rgba(58, 12, 163, 0.3);
+}
+
+/* Logout Button (Red color) */
+.btn-logout {
+    background-color: #dc3545; /* Red color */
+    color: white;
+    padding: 10px 30px;
+    border-radius: 50px; /* Oval shape */
+}
+
+.btn-logout:hover {
+    background-color: #c82333; /* Darker Red */
+    color: white;
+    transform: scale(1.05); /* Slight zoom effect */
+}
+/* Styles for the success popup */
+#successPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+#successPopup .btn {
+    margin-top: 10px;
+}
+#thankYouPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#thankYouPopup .btn {
+    margin-top: 10px;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+/* Profile and Logout Buttons - Oval Shape */
+#auth-buttons a {
+    text-decoration: none;
+    padding: 10px 30px; /* Adjust padding to make the button longer */
+    border-radius: 50px; /* Oval shape */
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+

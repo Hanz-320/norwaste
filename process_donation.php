@@ -1,51 +1,57 @@
 <?php
-session_start(); // Start session to check user login status
+include 'database.php'; // Include database connection
 
-// Check if user is logged in
-if (!isset($_SESSION['user'])) {
-    // If not logged in, redirect to login page with a message
-    header("Location: signin.html?error=not_logged_in");
-    exit;
-}
+// Collect and sanitize input
+$name = htmlspecialchars($_POST['name']);
+$email = htmlspecialchars($_POST['email']);
+$amount = (float) $_POST['amount'];
 
-// Check if the donation amount was submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $amount = $_POST['amount'];
+// Insert into database
+$stmt = $conn->prepare("INSERT INTO donations (user_id, amount) VALUES ((SELECT user_id FROM users WHERE email = ?), ?)");
+$stmt->bind_param("sd", $email, $amount);
 
-    if ($amount <= 0) {
-        echo "<p>Invalid donation amount. Please enter a positive number.</p>";
-        echo "<a href='donation.php'>Go back to donation page</a>";
-        exit;
-    }
-
-    // Save the donation (e.g., to a database or a log file)
-    $user = $_SESSION['user'];
-    $date = date("Y-m-d H:i:s");
-
-    // Database connection (update credentials as needed)
-    $host = 'localhost';
-    $user = 'root';
-    $pass = '';
-    $dbname = 'NorWaste';
-
-    $conn = new mysqli($host, $user, $pass, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Insert donation into database
-    $stmt = $conn->prepare("INSERT INTO donations (user_email, amount, donation_date) VALUES (?, ?, ?)");
-    $stmt->bind_param("sis", $_SESSION['user'], $amount, $date);
-
-    if ($stmt->execute()) {
-        echo "<p>Thank you for your donation of RM $amount!</p>";
-        echo "<a href='index.html'>Return to home</a>";
-    } else {
-        echo "<p>Error: " . $stmt->error . "</p>";
-        echo "<a href='donation.php'>Go back to donation page</a>";
-    }
-
-    $stmt->close();
-    $conn->close();
-}
+$success = $stmt->execute();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Confirmation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+</head>
+<body>
+    <!-- Overlay -->
+    <div id="overlay"></div>
+
+    <!-- Thank You Popup -->
+    <div id="thankYouPopup">
+        <?php if ($success): ?>
+            <h3>Thank You!</h3>
+            <p>Thank you for your donation, <strong><?php echo $name; ?></strong>. Your generosity is greatly appreciated!</p>
+            <button class="btn btn-success" onclick="closePopup()">Close</button>
+        <?php else: ?>
+            <h3>Error</h3>
+            <p>Something went wrong. Please try again.</p>
+            <button class="btn btn-danger" onclick="closePopup()">Close</button>
+        <?php endif; ?>
+    </div>
+
+    <script>
+        // Show the popup on page load
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("thankYouPopup").style.display = "block";
+
+        // Close the popup
+        function closePopup() {
+            document.getElementById("thankYouPopup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+            window.location.href = "index.php"; // Redirect to the homepage or another page
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

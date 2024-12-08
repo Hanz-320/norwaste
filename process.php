@@ -3,7 +3,7 @@
 $host = 'localhost'; // Update with your database host
 $user = 'root';      // Update with your database user
 $pass = '';          // Update with your database password
-$dbname = 'NorWaste'; // Database name
+$dbname = 'norWaste'; // Database name
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 

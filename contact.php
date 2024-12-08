@@ -7,23 +7,27 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In</title>
+    <title>Contact Us</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center">Sign In</h1>
-        <form action="process_signin.php" method="POST" class="mt-4">
+        <h1 class="text-center">Contact Us</h1>
+        <form action="process_contact.php" method="POST" class="mt-4">
+            <div class="mb-3">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email Address</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <label for="message" class="form-label">Your Message</label>
+                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     <?php include 'footer.php'; ?>
