@@ -1,5 +1,14 @@
 <?php
 session_start();
+// Check if there's an error message in the session
+if (isset($_SESSION['error_message'])) {
+    echo '<div class="alert alert-danger" role="alert">';
+    echo $_SESSION['error_message'];
+    echo '</div>';
+
+    // Unset the error message after displaying it
+    unset($_SESSION['error_message']);
+}
 ?>
 <?php include 'navbar.php'; ?>
 <!DOCTYPE html>
