@@ -9,9 +9,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="donate.php">Donate</a>
-                </li>
+                <!-- Conditional Display for Donate -->
+                <?php if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="donate.php">Donate</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link" href="contact.php">Contact Us</a>
                 </li>

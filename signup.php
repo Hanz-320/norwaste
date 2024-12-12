@@ -1,6 +1,6 @@
-<?php include 'navbar.php';
+<?php 
+include 'navbar.php';
 include 'database.php';
-session_start();
 
 $message = "";
 $username = "";
@@ -9,18 +9,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name = htmlspecialchars($_POST['first_name']);
     $last_name = htmlspecialchars($_POST['last_name']);
     $email = htmlspecialchars($_POST['email']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
 
-    // Insert new user into the database
-    $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $first_name, $last_name, $email, $password);
+    // Validation
+    $errors = [];
+    if (strlen($password) < 6) {
+        $errors[] = "Password must be at least 6 characters long.";
+    }
+    if ($password !== $confirm_password) {
+        $errors[] = "Passwords do not match.";
+    }
 
-    if ($stmt->execute()) {
-        $username = $first_name . " " . $last_name;
-        $message = "success";
-    } else {
-        $message = "error";
+    if (empty($errors)) {
+        // Hash the password and insert the new user into the database
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password);
+
+        if ($stmt->execute()) {
+            $username = $first_name . " " . $last_name;
+            $message = "success";
+        } else {
+            $message = "error";
+        }
     }
 }
 ?>
@@ -45,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             window.location.href = "signin.php";
         }
     </script>
-    
 </head>
 <body>
 
@@ -53,6 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="container mt-5">
     <h1 class="text-center">Sign Up</h1>
+
+    <?php if (!empty($errors)): ?>
+        <div class="alert alert-danger">
+            <?php foreach ($errors as $error): ?>
+                <p><?php echo htmlspecialchars($error); ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
     <form action="signup.php" method="POST" class="mt-4">
         <div class="mb-3">
             <label for="first_name" class="form-label">First Name</label>
@@ -69,6 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
         </div>
         <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>

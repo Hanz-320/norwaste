@@ -55,7 +55,7 @@
     transform: scale(1.05); /* Slight zoom effect */
 }
 /* Styles for the success popup */
-#successPopup {
+.successPopup {
     display: none;
     position: fixed;
     top: 50%;
@@ -68,24 +68,7 @@
     border-radius: 8px;
 }
 
-#successPopup .btn {
-    margin-top: 10px;
-}
-#thankYouPopup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    z-index: 1000;
-    text-align: center;
-}
-
-#thankYouPopup .btn {
+.successPopup .btn {
     margin-top: 10px;
 }
 

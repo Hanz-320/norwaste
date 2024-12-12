@@ -40,9 +40,9 @@ if ($result_admin->num_rows > 0) { // Admin found
         $user = $result_user->fetch_assoc();
         if (password_verify($password, $user['password'])) { // Use password_verify for users
             $_SESSION['user_logged_in'] = true;
-            $_SESSION['user_email'] = $email;
+            $_SESSION['email'] = $email;
+            $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['username'] = $user['first_name']; // Set user's first name as username
-
             // Redirect to the user dashboard after successful login
             header("Location: index.php");
             exit();

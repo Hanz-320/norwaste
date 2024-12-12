@@ -1,28 +1,24 @@
 <?php
-include 'database.php'; // Database connection
+include 'database.php'; // Include the database connection
 
 // Redirect if not logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['email'])) {
     header("Location: signin.php");
     exit();
 }
 
-// Determine the user ID
-$is_admin = $_SESSION['admin_logged_in'] ?? false;
-$user_id = $is_admin && isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : $_SESSION['user_id'] ?? null;
-if (!$user_id) {
-    echo '<p class="error">Invalid user ID or session.</p>';
-    exit();
-}
+// Get the user's email from the session
+$email = $_SESSION['email'];
 
 // Fetch user data
-$sql = "SELECT first_name, last_name, email FROM users WHERE user_id = ?";
+$sql = "SELECT first_name, last_name FROM users WHERE email = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('i', $user_id);
+$stmt->bind_param("s", $email);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
+
 if (!$user) {
-    echo '<p class="error">No such user found.</p>';
+    echo '<p class="error">User not found. Please log in again.</p>';
     exit();
 }
 
@@ -30,42 +26,40 @@ if (!$user) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
-    $email = $is_admin ? trim($_POST['email']) : $user['email'];
     $password = trim($_POST['password']);
-    
+    $confirm_password = trim($_POST['confirm_password']);
+
     // Validation
     $errors = [];
     if (empty($first_name)) $errors[] = 'First name is required.';
     if (empty($last_name)) $errors[] = 'Last name is required.';
-    if ($password && strlen($password) < 6) $errors[] = 'Password must be at least 6 characters.';
-    
-    if (!$errors) {
+    if (!empty($password)) {
+        if (strlen($password) < 6) $errors[] = 'Password must be at least 6 characters.';
+        if ($password !== $confirm_password) $errors[] = 'Passwords do not match.';
+    }
+
+    if (empty($errors)) {
+        // Update query
         $update_fields = ['first_name = ?', 'last_name = ?'];
         $params = [$first_name, $last_name];
 
-        if ($is_admin && $email) {
-            $update_fields[] = 'email = ?';
-            $params[] = $email;
-        }
-        
-        if ($password) {
+        if (!empty($password)) {
             $update_fields[] = 'password = ?';
             $params[] = password_hash($password, PASSWORD_DEFAULT);
         }
 
-        // Update query
-        $params[] = $user_id;
-        $sql = "UPDATE users SET " . implode(', ', $update_fields) . " WHERE user_id = ?";
+        $params[] = $email; // Add email as the condition
+        $sql = "UPDATE users SET " . implode(', ', $update_fields) . " WHERE email = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param(str_repeat('s', count($params) - 1) . 'i', ...$params);
-        
+        $stmt->bind_param(str_repeat('s', count($params)), ...$params);
+
         if ($stmt->execute()) {
-            $_SESSION['username'] = $first_name; // Update session for regular users
+            $_SESSION['username'] = $first_name; // Update the session username
             $_SESSION['success_message'] = 'Profile updated successfully.';
-            header("Location: " . ($is_admin ? 'admin_dashboard.php' : 'profile.php'));
+            header("Location: profile.php"); // Redirect to profile page
             exit();
         } else {
-            $errors[] = 'Failed to update profile.';
+            $errors[] = 'Failed to update profile. Please try again.';
         }
     }
 }
@@ -81,12 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="container mt-5">
-        <h2><?php echo $is_admin ? 'Edit User' : 'Edit Profile'; ?></h2>
+        <h2>Edit Profile</h2>
 
         <?php if (!empty($errors)): ?>
             <div class="alert alert-danger">
                 <?php foreach ($errors as $error): ?>
-                    <p><?php echo $error; ?></p>
+                    <p><?php echo htmlspecialchars($error); ?></p>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
@@ -100,18 +94,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="last_name" class="form-label">Last Name</label>
                 <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
             </div>
-            <?php if ($is_admin): ?>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-                </div>
-            <?php endif; ?>
             <div class="mb-3">
                 <label for="password" class="form-label">New Password (optional)</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
             </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter new password">
+            </div>
             <button type="submit" class="btn btn-primary">Save Changes</button>
-            <a href="<?php echo $is_admin ? 'admin_dashboard.php' : 'profile.php'; ?>" class="btn btn-secondary">Cancel</a>
+            <a href="profile.php" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </body>

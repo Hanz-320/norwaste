@@ -1,5 +1,6 @@
 <?php
 include 'database.php';
+session_start(); // Ensure session is started
 
 // Get data from POST request
 $first_name = htmlspecialchars($_POST['first_name']);
