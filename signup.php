@@ -1,41 +1,16 @@
 <?php 
 include 'navbar.php';
-include 'database.php';
+session_start();
 
-$message = "";
-$username = "";
+// Get error messages and saved data from session
+$errors = isset($_SESSION['signup_errors']) ? $_SESSION['signup_errors'] : [];
+$saved_data = isset($_SESSION['signup_data']) ? $_SESSION['signup_data'] : [];
+$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $first_name = htmlspecialchars($_POST['first_name']);
-    $last_name = htmlspecialchars($_POST['last_name']);
-    $email = htmlspecialchars($_POST['email']);
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    // Validation
-    $errors = [];
-    if (strlen($password) < 6) {
-        $errors[] = "Password must be at least 6 characters long.";
-    }
-    if ($password !== $confirm_password) {
-        $errors[] = "Passwords do not match.";
-    }
-
-    if (empty($errors)) {
-        // Hash the password and insert the new user into the database
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password);
-
-        if ($stmt->execute()) {
-            $username = $first_name . " " . $last_name;
-            $message = "success";
-        } else {
-            $message = "error";
-        }
-    }
-}
+// Clear session messages after use
+unset($_SESSION['signup_errors']);
+unset($_SESSION['signup_data']);
+unset($_SESSION['success_message']);
 ?>
 
 <!DOCTYPE html>
@@ -46,26 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Sign Up</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script>
-        function showSuccessPopup(username) {
-            const popup = document.getElementById("successPopup");
-            document.getElementById("usernameDisplay").textContent = username;
-            popup.style.display = "block";
-        }
-
-        function closePopup() {
-            document.getElementById("successPopup").style.display = "none";
-            window.location.href = "signin.php";
-        }
-    </script>
 </head>
 <body>
-
-<div id="overlay"></div>
 
 <div class="container mt-5">
     <h1 class="text-center">Sign Up</h1>
 
+    <!-- Display Success Message -->
+    <?php if ($success_message): ?>
+        <div class="alert alert-success text-center">
+            <strong>Account successfully created!</strong> Welcome, <?php echo htmlspecialchars($success_message); ?>!
+        </div>
+    <?php endif; ?>
+
+    <!-- Display Validation Errors -->
     <?php if (!empty($errors)): ?>
         <div class="alert alert-danger">
             <?php foreach ($errors as $error): ?>
@@ -74,18 +43,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
-    <form action="signup.php" method="POST" class="mt-4">
+    <!-- Sign Up Form -->
+    <form action="process_signup.php" method="POST" class="mt-4">
         <div class="mb-3">
             <label for="first_name" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="first_name" name="first_name" required>
+            <input type="text" class="form-control" id="first_name" name="first_name" 
+                   value="<?php echo isset($saved_data['first_name']) ? htmlspecialchars($saved_data['first_name']) : ''; ?>" 
+                   required>
         </div>
         <div class="mb-3">
             <label for="last_name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="last_name" name="last_name" required>
+            <input type="text" class="form-control" id="last_name" name="last_name" 
+                   value="<?php echo isset($saved_data['last_name']) ? htmlspecialchars($saved_data['last_name']) : ''; ?>" 
+                   required>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <input type="email" class="form-control" id="email" name="email" 
+                   value="<?php echo isset($saved_data['email']) ? htmlspecialchars($saved_data['email']) : ''; ?>" 
+                   required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
@@ -98,22 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>
 </div>
-
-<!-- Success Popup -->
-<div id="successPopup">
-    <h3>Sign Up Successful!</h3>
-    <p>Welcome, <span id="usernameDisplay"></span>!</p>
-    <button class="btn btn-success" onclick="closePopup()">Done</button>
-</div>
-
-<?php if ($message === "success"): ?>
-    <script>
-        document.getElementById("overlay").style.display = "block";
-        showSuccessPopup("<?php echo $username; ?>");
-    </script>
-<?php elseif ($message === "error"): ?>
-    <div class="alert alert-danger text-center mt-3">Error: Could not complete sign-up. Please try again.</div>
-<?php endif; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

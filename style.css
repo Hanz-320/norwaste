@@ -16,8 +16,8 @@
 .navbar-nav .nav-link:hover {
     color: #3a0ca3; /* Highlight on hover */
 }
-.btn-login {
-    color: #088F8F;
+#btn-login {
+    color: #08118f;
     border: 1px solid #3a0ca3;
     font-weight: 500;
     padding: 5px 15px;
@@ -54,34 +54,7 @@
     color: white;
     transform: scale(1.05); /* Slight zoom effect */
 }
-/* Styles for the success popup */
-.successPopup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-}
 
-.successPopup .btn {
-    margin-top: 10px;
-}
-
-#overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-}
 /* Profile and Logout Buttons - Oval Shape */
 #auth-buttons a {
     text-decoration: none;
@@ -99,7 +72,7 @@
 }
 
 .footer strong {
-    color: #ffc107; /* Highlighted text color */
+    color: #212529; /* Highlighted text color */
 }
 
 .footer p {
@@ -113,8 +86,3 @@
     color: #f8f9fa;
     transition: color 0.3s ease;
 }
-
-.footer .social-icons a:hover {
-    color: #ffc107; /* Highlight on hover */
-}
-

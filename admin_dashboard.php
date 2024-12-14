@@ -1,6 +1,7 @@
 <?php
 include 'database.php'; // Include your database connection file
 session_start();
+
 // Check if the admin is logged in
 if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
     header("Location: admin_login.php");
@@ -11,8 +12,11 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
 $sql_users = "SELECT user_id, first_name, last_name, email FROM users";
 $result_users = $conn->query($sql_users);
 
-// Fetch all donations from the database
-$sql_donations = "SELECT donation_id, user_id, amount, donated_at FROM donations ORDER BY donated_at DESC";
+// Fetch all donations with donor first_name from the database
+$sql_donations = "SELECT donations.donation_id, donations.amount, donations.donated_at, users.first_name
+    FROM donations
+    JOIN users ON donations.user_id = users.user_id
+    ORDER BY donations.donated_at DESC";
 $result_donations = $conn->query($sql_donations);
 
 // Fetch all messages from the contact_message table
@@ -48,7 +52,6 @@ if (isset($_GET['delete_message'])) {
     header("Location: admin_dashboard.php");
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -112,8 +115,8 @@ if (isset($_GET['delete_message'])) {
         <thead>
             <tr>
                 <th>Donation ID</th>
-                <th>User ID</th>
-                <th>Amount</th>
+                <th>Donor First Name</th>
+                <th>Amount (RM)</th>
                 <th>Donated Date</th>
                 <th>Actions</th>
             </tr>
@@ -122,8 +125,8 @@ if (isset($_GET['delete_message'])) {
             <?php while ($row = $result_donations->fetch_assoc()): ?>
                 <tr>
                     <td><?php echo $row['donation_id']; ?></td>
-                    <td><?php echo $row['user_id']; ?></td>
-                    <td>$<?php echo number_format($row['amount'], 2); ?></td>
+                    <td><?php echo htmlspecialchars($row['first_name']); ?></td>
+                    <td>RM<?php echo number_format($row['amount'], 2); ?></td>
                     <td><?php echo date("Y-m-d", strtotime($row['donated_at'])); ?></td>
                     <td>
                         <a href="edit_donation.php?id=<?php echo $row['donation_id']; ?>" class="btn btn-primary btn-sm">Edit</a>

@@ -21,12 +21,5 @@
             <strong>Operating Hours:</strong> Monday - Saturday, 8:00 AM - 6:00 PM
         </p>
 
-        <!-- Social Media Links -->
-        <div class="social-icons mt-3">
-            <a href="#" class="text-light mx-2"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="text-light mx-2"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="text-light mx-2"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="text-light mx-2"><i class="fab fa-linkedin-in"></i></a>
-        </div>
     </div>
 </footer>

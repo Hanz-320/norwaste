@@ -1,6 +1,6 @@
 <?php
 include 'database.php'; // Database connection
-
+session_start();
 // Redirect if not logged in
 if (!isset($_SESSION['username'])) {
     header("Location: signin.php");
