@@ -1,5 +1,12 @@
 <?php
 session_start();
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page with a message
+    $_SESSION['error_message'] = "You must log in first to make a donation.";
+    header("Location: signin.php");
+    exit();
+}
 ?>
 <?php include 'navbar.php'; ?>
 <!DOCTYPE html>

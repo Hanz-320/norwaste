@@ -18,6 +18,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="contact.php">Contact Us</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about_us.php">About Us</a>
+                </li>
             </ul>
             <div class="d-flex" id="auth-buttons">
                 <?php if (isset($_SESSION['username'])): ?>

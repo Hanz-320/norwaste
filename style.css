@@ -17,7 +17,7 @@
     color: #3a0ca3; /* Highlight on hover */
 }
 .btn-login {
-    color: #3a0ca3;
+    color: #088F8F;
     border: 1px solid #3a0ca3;
     font-weight: 500;
     padding: 5px 15px;
@@ -90,6 +90,31 @@
     font-weight: bold;
     transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
+.footer {
+    background-color: #212529; /* Dark background */
+    color: #f8f9fa; /* Light text */
+    font-size: 14px;
+    line-height: 1.8;
+    padding: 20px 0;
+}
 
+.footer strong {
+    color: #ffc107; /* Highlighted text color */
+}
 
+.footer p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.footer .social-icons a {
+    font-size: 20px;
+    margin: 0 10px;
+    color: #f8f9fa;
+    transition: color 0.3s ease;
+}
+
+.footer .social-icons a:hover {
+    color: #ffc107; /* Highlight on hover */
+}
 

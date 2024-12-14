@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // Check if admin is already logged in
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']) {
     header('Location: admin_dashboard.php');

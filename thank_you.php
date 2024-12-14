@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'database.php'; // Include your database connection file
 
 if (!isset($_SESSION['success_message'])) {

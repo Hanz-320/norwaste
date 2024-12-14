@@ -1,6 +1,3 @@
-<?php 
-session_start();  // Make sure session is started here
-?>
 <?php
 $servername = "localhost";
 $username = "root";
