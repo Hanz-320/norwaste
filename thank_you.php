@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'database.php'; // Include your database connection file
+include 'session_timeout.php';
 
 if (!isset($_SESSION['success_message'])) {
     header("Location: donate.php");

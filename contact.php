@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'session_timeout.php';
 ?>
 <?php include 'navbar.php'; ?>
 <!DOCTYPE html>

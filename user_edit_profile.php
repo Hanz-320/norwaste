@@ -1,5 +1,6 @@
 <?php
 include 'database.php'; // Include the database connection
+include 'session_timeout.php';
 session_start();
 // Redirect if not logged in
 if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['email'])) {

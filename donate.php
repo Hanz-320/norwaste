@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'session_timeout.php';
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to the login page with a message

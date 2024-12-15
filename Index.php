@@ -2,6 +2,7 @@
 session_start();
 include 'navbar.php';
 include 'database.php'; // Ensure this file contains your database connection setup
+include 'session_timeout.php';
 
 // Fetch total donations from the database
 $totalRaised = 0;

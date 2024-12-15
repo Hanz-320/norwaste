@@ -1,6 +1,6 @@
 <?php 
 session_start();
-
+include 'session_timeout.php';
 // Check if the user is logged in and if the email session is set
 if (!isset($_SESSION['username']) ) {
     header("Location: signin.php"); // Redirect to sign-in page if not logged in
