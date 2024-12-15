@@ -12,7 +12,7 @@
         <!-- Delivery Address -->
         <p class="mb-2">
             <i class="fas fa-truck"></i> 
-            <strong>Food Delivery/Drop-Off:</strong> Use the above address
+            <strong>Food Donation/Drop-Off:</strong> Use the above address
         </p>
 
         <!-- Operating Hours -->
